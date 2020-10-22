@@ -1,13 +1,9 @@
 package com.codemark.test.model;
 
-//import com.codemark.test.validation.UserPasswordConstraint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,17 +14,17 @@ public class User {
     public User(){}
 
     @Column
-    @NotBlank(message = "name is mandatory")
+    @NotBlank(message = "invalid name")
     private String name;
 
     @Id
     @Column(name = "login", nullable = false, unique = true)
-    @NotBlank(message = "login is mandatory")
+    @NotBlank(message = "invalid login")
     private String login;
 
     @Column
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{1,}$")
-  //  @UserPasswordConstraint
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{1,}$",
+             message = "invalid password")
     private String password;
 
     @ManyToMany( fetch = FetchType.EAGER)

@@ -5,15 +5,10 @@ import com.codemark.test.model.Role;
 import com.codemark.test.model.User;
 import com.codemark.test.repository.RoleRepository;
 import com.codemark.test.repository.UserRepository;
-import com.codemark.test.service.RoleService;
-import com.codemark.test.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +42,7 @@ public class UserConverter {
         Set<String> allNamesRoles = allRoles.stream()
                 .map(Role::getName).collect(Collectors.toSet());
         if (!allNamesRoles.containsAll(dtoRoles)){
-            throw new RuntimeException();}
+            throw new IllegalArgumentException();}
 
         Set<Role> userRoles = roleRepository.findAllByNames(dtoRoles);
         User user = new User();
