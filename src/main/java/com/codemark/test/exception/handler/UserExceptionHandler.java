@@ -1,6 +1,7 @@
 package com.codemark.test.exception.handler;
 
 import com.codemark.test.exception.NoSuchUserException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-@ControllerAdvice
+@ControllerAdvice()
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NoSuchUserException.class)
@@ -20,11 +21,11 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(
                 new LocalException("no such user"), HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleConstraintViolation(RuntimeException ex) {
         System.out.println("exception catched");
         return new ResponseEntity<>(
-                new LocalException(ex.getMessage()),HttpStatus.BAD_REQUEST);
+                new LocalException("wrong data"),HttpStatus.BAD_REQUEST);
     }
 
     private static class LocalException {

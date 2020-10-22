@@ -3,7 +3,7 @@ package com.codemark.test.config;
 import com.codemark.test.dto.UserDto;
 import com.codemark.test.model.Role;
 import com.codemark.test.model.User;
-import com.codemark.test.validation.UserValidator;
+//import com.codemark.test.validation.UserValidator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,9 +33,9 @@ public class SpringConfig {
         return new ModelMapper();
     }
 
-    @Bean
-    public UserValidator beforeCreateWebsiteUserValidator() {
-        return new UserValidator();
-    }
+//    @Bean
+//    public UserValidator beforeCreateWebsiteUserValidator() {
+//        return new UserValidator();
+//    }
 
 }
