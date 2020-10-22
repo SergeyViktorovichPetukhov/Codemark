@@ -20,8 +20,13 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 //        return new ResponseEntity<>(
 //                new LocalException("no such user"), HttpStatus.NOT_FOUND);
 //    }
-
     @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<Object> handleConstraintViolations(RuntimeException ex) {
+        System.out.println("exception catched");
+        return new ResponseEntity<>(
+            new LocalException("wrong fields of user"),HttpStatus.BAD_REQUEST);
+}
+    @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolation(RuntimeException ex) {
         System.out.println("exception catched");
         return new ResponseEntity<>(
