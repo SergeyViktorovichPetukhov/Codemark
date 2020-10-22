@@ -6,34 +6,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-@Component
-public class UserValidator implements Validator {
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
+public class UserValidator implements ConstraintValidator<UserPasswordConstraint, String> {
     @Override
-    public boolean supports(Class<?> clazz) {
-        return User.class.equals(clazz);
-    }
-
-    @Override
-    public void validate(Object obj, Errors errors) {
-        User user = (User) obj;
-        if (checkInputString(user.getName())) {
-            errors.rejectValue("name", "name.invalid");
-        }
-
-        if (checkInputString(user.getLogin())) {
-            errors.rejectValue("login", "login.invalid");
-        }
-
-        if (checkPassword(user.getPassword())) {
-            errors.rejectValue("email", "invalid.invalid");
-        }
-    }
-
-    private boolean checkInputString(String input) {
-        return (input == null || input.trim().length() == 0);
-    }
-    private boolean checkPassword(String input) {
-        return (input.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"));
+    public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])");
     }
 }

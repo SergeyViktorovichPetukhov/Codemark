@@ -1,5 +1,6 @@
 package com.codemark.test.model;
 
+import com.codemark.test.validation.UserPasswordConstraint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -26,8 +27,8 @@ public class User {
     private String login;
 
     @Column
-    @Valid
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])")
+  //  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])")
+    @UserPasswordConstraint
     private String password;
 
     @ManyToMany( fetch = FetchType.EAGER)

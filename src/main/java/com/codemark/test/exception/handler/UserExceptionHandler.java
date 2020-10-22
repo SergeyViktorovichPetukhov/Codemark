@@ -15,17 +15,11 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
 
-//    @ExceptionHandler(NoSuchUserException.class)
-//    protected ResponseEntity<LocalException> handleNoSuchUserException() {
-//        return new ResponseEntity<>(
-//                new LocalException("no such user"), HttpStatus.NOT_FOUND);
-//    }
-    @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<Object> handleConstraintViolations(RuntimeException ex) {
-        System.out.println("exception catched");
+    @ExceptionHandler(NoSuchUserException.class)
+    protected ResponseEntity<LocalException> handleNoSuchUserException() {
         return new ResponseEntity<>(
-            new LocalException("wrong fields of user"),HttpStatus.BAD_REQUEST);
-}
+                new LocalException("no such user"), HttpStatus.NOT_FOUND);
+    }
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolation(RuntimeException ex) {
         System.out.println("exception catched");
