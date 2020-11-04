@@ -26,9 +26,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        List<User> users = repository.findAll();
+        List<User> users = repository.findAllWithoutRoles();
         if (users != null){
-            users.forEach(user -> user.setRoles(null));
             return userConverter.convertAllUsersToDtos(users);
         }
         return null;
@@ -48,8 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String login) {
         User user = findByLogin(login);
-        if (user != null)
-            repository.delete(user);
+        repository.delete(user);
     }
 
     @Override

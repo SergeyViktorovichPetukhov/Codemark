@@ -31,14 +31,11 @@ public class UserConverter {
     private RoleRepository roleRepository;
     private UserRepository userRepository;
 
-    public User convertToModel(UserDto dto)
-    {
+    public User convertToModel(UserDto dto) {
         Set<String> dtoRoles = dto.getRoles();
         List<Role> allRoles = roleRepository.findAll();
         allRoles.forEach((r)->System.out.println(r.getName()));
-        /*я предположил, что от клиента может
-        прилететь неправильный массив ролей
-         */
+
         Set<String> allNamesRoles = allRoles.stream()
                 .map(Role::getName).collect(Collectors.toSet());
         if (!allNamesRoles.containsAll(dtoRoles)){
@@ -53,8 +50,7 @@ public class UserConverter {
         return user;
     }
 
-    public UserDto convertToDto(User user)
-    {
+    public UserDto convertToDto(User user) {
         UserDto dto = new UserDto();
         modelMapper.map(user,dto);
         Set<String> roles = new HashSet<>();
@@ -64,8 +60,7 @@ public class UserConverter {
         return dto;
     }
 
-    public List<UserDto> convertAllUsersToDtos(List<User> users)
-    {
+    public List<UserDto> convertAllUsersToDtos(List<User> users) {
         List<UserDto> dtos = users
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))

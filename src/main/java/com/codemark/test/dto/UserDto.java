@@ -10,8 +10,7 @@ public class UserDto {
 
     public UserDto(){}
 
-    public UserDto(String name, String login, String password, Set<String> roles
-    ) {
+    public UserDto(String name, String login, String password, Set<String> roles) {
         this.name = name;
         this.login = login;
         this.password = password;
