@@ -9,8 +9,11 @@ import com.codemark.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,9 +29,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        List<User> users = repository.findAllWithoutRoles();
-        if (users != null){
-            return userConverter.convertAllUsersToDtos(users);
+        List<String> usersData = repository.findAllWithoutRoles();
+        if (usersData != null){
+            List<UserDto> result = new ArrayList<>();
+            usersData.forEach(s -> result.add(new UserDto(
+                    s.split(",")[0],
+                    s.split(",")[1],
+                    s.split(",")[2]
+
+            )));
+            return result;
         }
         return null;
     }
