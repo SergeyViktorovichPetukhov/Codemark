@@ -34,7 +34,6 @@ public class UserConverter {
     public User convertToModel(UserDto dto) {
         Set<String> dtoRoles = dto.getRoles();
         List<Role> allRoles = roleRepository.findAll();
-        allRoles.forEach((r)->System.out.println(r.getName()));
 
         Set<String> allNamesRoles = allRoles.stream()
                 .map(Role::getName).collect(Collectors.toSet());
