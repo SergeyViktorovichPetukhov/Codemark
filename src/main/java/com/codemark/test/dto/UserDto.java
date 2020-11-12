@@ -2,67 +2,27 @@ package com.codemark.test.dto;
 
 import com.codemark.test.model.Role;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class UserDto {
-
-    public UserDto(){}
-
-    public UserDto(String name, String login, String password, Set<String> roles) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
-        this.roles = roles;
-    }
-
-    public UserDto(String name, String login, String password) {
-        this.name = name;
-        this.login = login;
-        this.password = password;
-    }
-
+    @NonNull
     private String name;
-
+    @NonNull
     private String login;
-
+    @NonNull
     private String password;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<String> roles;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
 
     @Override
     public String toString(){

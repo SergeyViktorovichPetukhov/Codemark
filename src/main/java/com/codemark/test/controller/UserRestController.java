@@ -1,5 +1,6 @@
 package com.codemark.test.controller;
 
+import com.codemark.test.converter.UserConverter;
 import com.codemark.test.dto.UserDto;
 import com.codemark.test.exception.NoSuchUserException;
 import com.codemark.test.model.User;
@@ -27,7 +28,11 @@ public class UserRestController {
 
     private UserService userService;
 
-    public UserRestController(@Autowired UserService userService) {
+    private UserConverter userConverter;
+
+    public UserRestController(@Autowired UserService userService,
+                              @Autowired UserConverter userConverter) {
+        this.userConverter = userConverter;
         this.userService = userService;
     }
 
@@ -38,7 +43,7 @@ public class UserRestController {
 
     @GetMapping(value = "/{login}")
     public ResponseEntity<User> getUser(@PathVariable(name = "login") String login) {
-        return new ResponseEntity(userService.get(login),HttpStatus.OK);
+        return new ResponseEntity(userService.getByLogin(login),HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{login}")
@@ -49,7 +54,10 @@ public class UserRestController {
 
     @PostMapping
     public ResponseEntity addUser(@RequestBody UserDto dto) {
-        User user = userService.save(dto);
+        User user = userService.save(userConverter
+                        .convertToModel(
+                                dto, dto.getRoles()));
+
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("Location", "/users/" + user.getLogin());
         return new ResponseEntity(headers,HttpStatus.CREATED);
@@ -59,7 +67,7 @@ public class UserRestController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable (name = "login") String login,
                            @RequestBody UserDto dto) {
-        userService.update(login,dto);
+        userService.update(login,dto.getRoles());
     }
 
 }

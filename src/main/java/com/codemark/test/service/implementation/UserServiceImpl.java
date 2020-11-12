@@ -3,6 +3,7 @@ package com.codemark.test.service.implementation;
 import com.codemark.test.converter.UserConverter;
 import com.codemark.test.dto.UserDto;
 import com.codemark.test.exception.NoSuchUserException;
+import com.codemark.test.model.Role;
 import com.codemark.test.model.User;
 import com.codemark.test.repository.UserRepository;
 import com.codemark.test.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,14 +30,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll() {
+    public List<User> getAll() {
         List<String> usersData = repository.findAllWithoutRoles();
         if (usersData != null){
-            List<UserDto> result = new ArrayList<>();
-            usersData.forEach(s -> result.add(new UserDto(
-                    s.split(",")[0],
-                    s.split(",")[1],
-                    s.split(",")[2]
+            List<User> result = new ArrayList<>();
+            usersData.forEach(s -> result.add(
+                    new User(
+                        s.split(",")[0],
+                        s.split(",")[1],
+                        s.split(",")[2]
 
             )));
             return result;
@@ -45,13 +48,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto get(String login) {
+    public User getByLogin(String login) {
         return userConverter.convertToDto(findByLogin(login));
     }
 
     @Override
-    public User save(UserDto dto) {
-        return userConverter.convertToModel(dto);
+    public User save(User user, Set<Role> userRoles) {
+
     }
 
     @Override
@@ -61,16 +64,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(String login, UserDto dto) {
+    public void update(String login, User user) {
         User existing = findByLogin(login);
         if (existing != null){
-            userConverter.convertToModel(dto);
+            save();
         }
+        else throw new NoSuchUserException();
     }
 
     private User findByLogin(String login) {
         Optional<User> user = repository.findByLogin(login);
-        return user.orElseThrow(() -> new NoSuchUserException());
+        return user.orElse(null);
     }
 
 }

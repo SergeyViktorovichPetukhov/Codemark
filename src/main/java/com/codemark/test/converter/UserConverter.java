@@ -18,50 +18,41 @@ import java.util.stream.Collectors;
 @Component
 public class UserConverter {
 
-    public UserConverter(@Autowired ModelMapper modelMapper,
-                         @Autowired RoleRepository roleRepository,
-                         @Autowired UserRepository userRepository)
+    public UserConverter(@Autowired ModelMapper modelMapper)
     {
-        this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
     }
 
     private ModelMapper modelMapper;
-    private RoleRepository roleRepository;
-    private UserRepository userRepository;
 
-    public User convertToModel(UserDto dto) {
-        Set<String> dtoRoles = dto.getRoles();
-        List<Role> allRoles = roleRepository.findAll();
+    public User convertToModel(UserDto dto, Set<String> userRoles) {
 
-        Set<String> allNamesRoles = allRoles.stream()
-                .map(Role::getName).collect(Collectors.toSet());
-        if (!allNamesRoles.containsAll(dtoRoles)){
-            throw new IllegalArgumentException();}
+        Set<String> allNamesRoles = new HashSet<>(userRoles);
 
-        Set<Role> userRoles = roleRepository.findAllByNames(dtoRoles);
+        if (!allNamesRoles.containsAll(dto.getRoles()))
+            throw new IllegalArgumentException();
+
         User user = new User();
-        user.setRoles(userRoles);
         modelMapper.map(dto,user);
-        roleRepository.saveAll(userRoles);
-        userRepository.save(user);
+        user.setRoles(userRoles.stream()
+                .map(roleName -> new Role(roleName))
+                .collect(Collectors.toSet()));
         return user;
     }
 
     public UserDto convertToDto(User user) {
+
         UserDto dto = new UserDto();
         modelMapper.map(user,dto);
-        Set<String> roles = new HashSet<>();
-        Set<Role> userRoles = roleRepository.findByUser(user);
-        roles.addAll(userRoles.stream().map(Role::getName).collect(Collectors.toSet()));
+        Set<String> roles = new HashSet<>(user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet()));
         dto.setRoles(roles);
         return dto;
     }
 
-    public List<UserDto> convertAllUsersToDtos(List<User> users) {
-        List<UserDto> dtos = users
-                .stream()
+    public List<UserDto> convertToDtos(List<User> users) {
+        List<UserDto> dtos = users.stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
         return dtos;
