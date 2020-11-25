@@ -26,11 +26,6 @@ public class Role {
     @Column
     private String name;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
-    private List<User> user;
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o)

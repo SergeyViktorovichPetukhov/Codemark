@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role,Long> {
-    Set<Role> findByUser(User user);
+    Role findByName(String roleName);
     @Query("SELECT r FROM Role r WHERE r.name IN :rNames")
     Set<Role> findAllByNames(@Param(value = "rNames") Set<String> roleNames);
 

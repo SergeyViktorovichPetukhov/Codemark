@@ -34,7 +34,7 @@ public class User {
              message = "invalid password")
     private String password;
 
-    @ManyToMany( fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_role",
             joinColumns = { @JoinColumn(name = "user_login") },
@@ -53,5 +53,10 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash( login, name);
+    }
+
+    @Override
+    public String toString(){
+        return "user: " + this.getName() + " " + this.getLogin() + " " + this.getRoles().toString();
     }
 }

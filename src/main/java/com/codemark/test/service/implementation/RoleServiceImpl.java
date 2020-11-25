@@ -19,10 +19,6 @@ public class RoleServiceImpl implements RoleService {
         this.repository = repository;
     }
 
-    @Override
-    public Set<Role> findByUser(User user) {
-        return repository.findByUser(user);
-    }
 
     @Override
     public Set<Role> findAll() {

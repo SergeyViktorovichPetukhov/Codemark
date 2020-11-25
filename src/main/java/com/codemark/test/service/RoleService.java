@@ -6,7 +6,6 @@ import com.codemark.test.model.User;
 import java.util.Set;
 
 public interface RoleService {
-    Set<Role> findByUser(User user);
     Set<Role> findAll();
     Set<Role> findAllByNames(Set<String> roleNames);
     Role save(Role role);

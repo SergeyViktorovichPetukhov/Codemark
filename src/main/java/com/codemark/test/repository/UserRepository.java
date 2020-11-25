@@ -15,7 +15,6 @@ import java.util.Set;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByLogin(String login);
-    boolean existsByLogin(String login);
     @Query(value = "SELECT name, login, password FROM users;", nativeQuery = true)
     List<String> findAllWithoutRoles();
 }
